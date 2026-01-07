@@ -1,81 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@900&display=swap');
 
 :root {
     --black: #000000;
     --white: #ffffff;
     --lime: #a3ff00;
-    --border-thick: 5px solid #000000;
+    --border: 5px solid #000000;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--white); font-family: 'Space Grotesk', sans-serif; font-weight: 900; color: var(--black); }
+.hidden { display: none !important; }
+.lime-bg { background: var(--lime); }
+.black-bg { background: var(--black); }
+.white-text { color: var(--white); }
 
-body {
-    background-color: var(--white);
-    font-family: 'Space Grotesk', sans-serif;
-    overflow: hidden;
-}
+/* MAIN LAYOUTS */
+.main-layout { height: 100vh; padding: 3rem; display: flex; flex-direction: column; border: 10px solid var(--black); }
 
-/* THE GATE LAYOUT */
-.main-gate {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 3rem;
-    border: 10px solid var(--black); /* Screen Frame */
-}
+/* LOGIN GATE ELEMENTS */
+.logo-text { font-size: 3.5rem; letter-spacing: -2px; }
+.status-box { border: var(--border); padding: 5px 15px; background: var(--black); color: var(--white); }
+.gate-center { width: 100%; max-width: 900px; margin: auto; }
+input { width: 100%; font-size: 2rem; padding: 1.5rem; border: var(--border); box-shadow: 12px 12px 0px var(--black); outline: none; margin-top: 10px; }
 
-/* HEADER */
-.gate-header { display: flex; justify-content: space-between; align-items: flex-start; }
-.logo-text { font-size: 3rem; font-weight: 900; letter-spacing: -2px; }
-.status-box { border: var(--border-thick); padding: 5px 15px; font-weight: 900; background: var(--black); color: var(--white); }
+.big-brutal-btn { width: 100%; font-size: 2rem; padding: 1.5rem; background: var(--white); border: var(--border); box-shadow: 12px 12px 0px var(--black); cursor: pointer; position: relative; overflow: hidden; margin-top: 2rem; }
+.scan-bar { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--lime); transition: left 1.5s ease; }
+.btn-text { position: relative; z-index: 5; }
 
-/* BIG INPUT & BUTTON */
-.gate-center { width: 100%; max-width: 900px; margin: 0 auto; }
+/* DASHBOARD ELEMENTS */
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; border-bottom: var(--border); padding-bottom: 20px; }
+.vibe-counter { border: var(--border); padding: 10px 20px; box-shadow: 6px 6px 0px var(--black); }
 
-.input-container { margin-bottom: 2rem; }
-.input-container label { display: block; font-weight: 900; margin-bottom: 10px; font-size: 1.2rem; }
+.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 2rem; }
+.project-card { border: var(--border); padding: 20px; box-shadow: 8px 8px 0px var(--black); }
 
-input {
-    width: 100%;
-    font-size: 2.5rem;
-    padding: 1.5rem;
-    border: var(--border-thick);
-    box-shadow: 12px 12px 0px var(--black);
-    font-family: monospace;
-    outline: none;
-    background: var(--white);
-}
+/* FOOTER TABS */
+.tab-footer { position: fixed; bottom: 4rem; left: 50%; transform: translateX(-50%); display: flex; gap: 1rem; }
+.tab-btn { border: var(--border); padding: 15px 30px; font-weight: 900; background: var(--white); cursor: pointer; box-shadow: 6px 6px 0px var(--black); }
+.tab-btn.active { background: var(--lime); transform: translate(-2px, -2px); }
 
-.big-brutal-btn {
-    width: 100%;
-    font-size: 2rem;
-    font-weight: 900;
-    padding: 1.5rem;
-    background: var(--white);
-    border: var(--border-thick);
-    box-shadow: 12px 12px 0px var(--black);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.1s;
-}
-
-.big-brutal-btn:active {
-    transform: translate(6px, 6px);
-    box-shadow: 6px 6px 0px var(--black);
-}
-
-/* SCAN ANIMATION */
-.scan-bar {
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: var(--lime);
-    z-index: 0;
-    transition: left 2s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-.btn-text { position: relative; z-index: 10; }
-
-.gate-footer { text-align: center; font-weight: 700; opacity: 0.5; }
+.submit-card { max-width: 600px; margin: 4rem auto; border: var(--border); padding: 3rem; box-shadow: 15px 15px 0px var(--black); }
