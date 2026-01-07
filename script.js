@@ -1,69 +1,98 @@
 let projects = [
-    { id: 1, name: "PULSE_DEX", category: "DEFI", score: 2500, isWhale: true, desc: "Liquid vibe exchange engine." },
-    { id: 2, name: "NEON_VIBE", category: "TOOLS", score: 1800, isWhale: true, desc: "On-chain visualizer." },
-    { id: 3, name: "GRID_CORE", category: "INFRA", score: 1200, isWhale: false, desc: "Decentralized node layer." }
+    { id: 1, name: "LIQUID_VIBE", category: "DEFI", score: 45000, desc: "Automated liquidity provision for cultural assets." },
+    { id: 2, name: "ORACLE_X", category: "TOOLS", score: 12000, desc: "Real-time sentiment data for launchpad graduation." },
+    { id: 3, name: "NEON_SQUAD", category: "DAO", score: 5000, desc: "Governing the aesthetic layer of the blockchain." }
 ];
 
 let userPower = 1.0;
-let currentView = 'snap';
-let currentCategory = 'ALL';
+const GOAL = 50000;
 
 function initializeScan() {
     const addr = document.getElementById('walletInput').value;
     const toast = document.getElementById('assetToast');
-    
-    // Simulate Scan
-    document.getElementById('goBtn').innerText = "...";
-    setTimeout(() => {
-        userPower = addr.startsWith('1') ? 10.0 : 1.0;
-        toast.innerText = `POWER_LOCKED: ${userPower}x`;
-        toast.classList.add('show');
-        document.getElementById('goBtn').innerText = "GO";
-        setTimeout(() => toast.classList.remove('show'), 2000);
-        loadArena();
-    }, 1000);
+    userPower = addr.length > 20 ? 10.0 : 1.0; // Simple whale detection logic
+    toast.innerText = `POWER_LOCKED: ${userPower}x`;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+    loadArena();
+}
+
+function launchConfetti() {
+    const emojis = ['🔥', '✨', '💰', '🚀', '🟢'];
+    for (let i = 0; i < 40; i++) {
+        const c = document.createElement('div');
+        c.className = 'snowflake';
+        c.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.fontSize = Math.random() * 20 + 10 + 'px';
+        c.style.animationDuration = (Math.random() * 2 + 1) + 's';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 2000);
+    }
 }
 
 function loadArena() {
     const feed = document.getElementById('projectFeed');
-    let filtered = projects;
-    if (currentCategory !== 'ALL') filtered = projects.filter(p => p.category === currentCategory);
+    feed.innerHTML = projects.map(p => {
+        const progress = Math.min((p.score / GOAL) * 100, 100);
+        const isGraduated = progress >= 100;
+        
+        return `
+            <section class="art-card ${isGraduated ? 'graduated' : ''}">
+                <div class="launch-header">
+                    <span class="status-pill ${isGraduated ? 'gold' : 'pulse'}">
+                        ${isGraduated ? 'GRADUATED' : 'LIVE_FUNDING'}
+                    </span>
+                    <span class="timer">SYNCING...</span>
+                </div>
 
-    feed.innerHTML = filtered.map(p => `
-        <section class="art-card" onclick="openModal(${p.id})">
-            <div class="collection-slider">
-                <div class="collection-slide" style="background: ${p.isWhale ? '#111' : '#000'}; border: 2px solid ${p.isWhale ? '#a3ff00' : '#222'}">
-                    <div style="text-align: center;">
-                        <h2 style="font-size: 40px; letter-spacing: -2px;">${p.name}</h2>
-                        <p style="font-size: 10px; opacity: 0.5; margin-top: 10px;">TAP_FOR_DETAILS</p>
+                <div class="terminal-view">
+                    <h2 class="project-title">${p.name}</h2>
+                    <div class="progress-container">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: ${progress}%;"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span>${progress.toFixed(1)}% TO_TARGET</span>
+                            <span>${GOAL.toLocaleString()} VIBES</span>
+                        </div>
+                    </div>
+                    <p class="mission-text">${p.desc}</p>
+                </div>
+
+                <div class="launch-actions">
+                    <div class="stat-box">
+                        <small>VIBE_STRENGTH</small>
+                        <strong>${p.score.toLocaleString()}</strong>
+                    </div>
+                    <button class="launch-btn" onclick="vote(${p.id}, event)">BOOST_VIBE</button>
+                    <button class="mint-btn" onclick="openModal(${p.id})">TERMINAL_INFO</button>
+                </div>
+
+                <div class="ticker-wrap">
+                    <div class="ticker">
+                        NEW_BOOST_DETECTION (+${Math.round(10 * userPower)}) • NODE_SYNC_COMPLETE • ARENA_ID: ${p.id}99X
                     </div>
                 </div>
-            </div>
-            <div class="collection-counter">${p.score} VIBES</div>
-            <div style="position: absolute; bottom: 100px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
-                <button onclick="vote(${p.id}, event)" style="background: #a3ff00; border: none; width: 50px; height: 50px; border-radius: 50%; font-weight: 900;">↑</button>
-            </div>
-        </section>
-    `).join('');
+            </section>
+        `;
+    }).join('');
 }
 
 function vote(id, e) {
     e.stopPropagation();
     const p = projects.find(x => x.id === id);
+    const oldScore = p.score;
     p.score += Math.round(10 * userPower);
     
+    if (oldScore < GOAL && p.score >= GOAL) {
+        launchConfetti();
+    }
+    
     const toast = document.getElementById('assetToast');
-    toast.innerText = `+${Math.round(10 * userPower)} VIBE_IMPACT`;
+    toast.innerText = `+${Math.round(10 * userPower)} IMPACT`;
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 1500);
-    loadArena();
-}
-
-function switchTab(view) {
-    currentView = view;
-    document.getElementById('projectFeed').setAttribute('data-view', view);
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    setTimeout(() => toast.classList.remove('show'), 1000);
     loadArena();
 }
 
@@ -71,25 +100,24 @@ function openModal(id) {
     const p = projects.find(x => x.id === id);
     document.getElementById('modalTitle').innerText = p.name;
     document.getElementById('modalBody').innerText = p.desc;
-    document.getElementById('modalCategory').innerText = p.category;
     document.getElementById('projectModal').classList.remove('hidden');
-    document.body.classList.add('show-details');
 }
 
 function closeModal() {
     document.getElementById('projectModal').classList.add('hidden');
-    document.body.classList.remove('show-details');
 }
 
 function toggleTheme() {
     const html = document.documentElement;
-    html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    const current = html.getAttribute('data-theme');
+    html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
 }
 
-function setCategory(cat) {
-    currentCategory = cat;
-    loadArena();
-}
+// Global Timer
+setInterval(() => {
+    document.querySelectorAll('.timer').forEach(t => {
+        t.innerText = `T-MINUS: ${new Date().toLocaleTimeString()}`;
+    });
+}, 1000);
 
-// Initial Load
 loadArena();
