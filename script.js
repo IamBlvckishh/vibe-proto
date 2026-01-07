@@ -1,91 +1,128 @@
 const projects = [
-    { id: 1, name: "PULSE_DEX", score: 1450, github: "github.com/vibe/pulse", desc: "Hyper-speed exchange for the 1B Vibe supply." },
-    { id: 2, name: "VIBE_TERMINAL", score: 920, github: "github.com/vibe/term", desc: "Low-latency dashboard for Arena metrics." },
-    { id: 3, name: "SHARD_LOGIC", score: 2300, github: "github.com/vibe/shard", desc: "L2 scaling solution using raw Rust logic." },
-    { id: 4, name: "NEON_GRAPH", score: 400, github: "github.com/vibe/neon", desc: "Visualizing the social graph of all 1B Vibe holders." }
+    { id: 1, name: "PULSE_DEX", score: 1450, isWhale: true },
+    { id: 2, name: "NEON_VIBE", score: 890, isWhale: true },
+    { id: 3, name: "RAW_TOOLS", score: 42, isWhale: false },
+    { id: 4, name: "GRID_LOGIC", score: 110, isWhale: false }
 ];
 
-const scanLogs = [
-    "> CONNECTING_TO_SOLANA_RPC...",
-    "> SCANNING_WALLET_METADATA...",
-    "> VERIFYING_1B_VIBE_SUPPLY...",
-    "> DECRYPTING_ARENA_REPUTATION...",
-    "> ACCESS_GRANTED_USER_001."
+const whales = [
+    { name: "V_KONG", power: "9.5x" },
+    { name: "S_CHAD", power: "7.2x" },
+    { name: "D_REPT", power: "5.0x" }
 ];
 
-// LOGIN SCAN LOGIC
+let userBalance = 0;
+let userPower = 1.0;
+let activeFeed = 'pulse';
+
+// --- LOGIN FLOW ---
 document.getElementById('scanBtn').onclick = function() {
     const address = document.getElementById('walletInput').value;
-    const btn = this;
     if (!address) return;
 
-    btn.querySelector('.btn-text').innerText = "SCANNING...";
-    btn.querySelector('.scan-bar').style.left = "0";
+    this.querySelector('.btn-text').innerText = "SCANNING...";
+    this.querySelector('.scan-bar').style.left = "0";
     const terminal = document.getElementById('logTerminal');
     terminal.classList.remove('hidden');
 
-    scanLogs.forEach((line, i) => {
+    const logs = ["> CONN_SOL...", "> SCAN_VIBE...", "> BAL_CHECK...", "> ACCESS_GRANT"];
+    logs.forEach((l, i) => {
         setTimeout(() => {
-            const l = document.createElement('div');
-            l.innerText = line;
-            l.style.marginBottom = "5px";
-            terminal.appendChild(l);
+            const div = document.createElement('div');
+            div.innerText = l;
+            terminal.appendChild(div);
         }, i * 500);
     });
 
     setTimeout(() => {
+        userBalance = address.startsWith('1') ? 100000 : 5000;
+        userPower = Math.max(1, userBalance / 10000);
+        document.getElementById('powerLevel').innerText = userPower.toFixed(2) + "x";
+        document.getElementById('powerBarFill').style.width = Math.min(100, (userBalance/50000)*100) + "%";
+        
+        if(userBalance < 50000) document.getElementById('vibeCheckBar').classList.remove('hidden');
+        
         document.getElementById('gateScreen').classList.add('hidden');
         document.getElementById('homeScreen').classList.remove('hidden');
+        updateLeaderboard();
         loadArena();
-    }, 3500);
+    }, 3000);
 };
 
-// ARENA RENDER
+// --- ARENA RENDER ---
 function loadArena() {
     const feed = document.getElementById('projectFeed');
-    feed.innerHTML = projects.map(p => {
-        const trending = p.score > 1000 ? `<div class="trending-badge">HOT_VIBE</div>` : '';
-        return `
-            <div class="project-card" onclick="openProject(${p.id})">
-                ${trending}
-                <h2 style="font-size:2.5rem; border-bottom:4px solid black; margin-bottom:15px;">${p.name}</h2>
-                <p>VIBE_SCORE: <span class="lime-bg">${p.score}</span></p>
-                <div style="display:flex; gap:10px; margin-top:20px;">
-                    <button class="tab-btn" style="flex:1" onclick="event.stopPropagation(); vote(${p.id}, 10)">UP</button>
-                    <button class="tab-btn" style="flex:1" onclick="event.stopPropagation(); vote(${p.id}, -10)">DOWN</button>
-                </div>
+    const filtered = projects.filter(p => activeFeed === 'pulse' ? p.isWhale : !p.isWhale);
+    const glow = (userPower * 20) + "px";
+
+    feed.innerHTML = filtered.map(p => `
+        <div class="project-card ${p.isWhale ? 'obsidian' : ''}" id="card-${p.id}">
+            <div class="card-content">
+                <h2 style="font-size: 5rem; letter-spacing: -5px;">${p.name}</h2>
+                <p style="opacity:0.5">[ TAP_FOR_DETAILS ]</p>
             </div>
-        `;
-    }).join('');
+            <div class="side-actions">
+                <button class="action-btn up-btn" style="--glow-power: ${glow}" onclick="event.stopPropagation(); triggerVibe(${p.id}, this)">▲</button>
+                <div class="score-tag" id="score-${p.id}">${p.score}</div>
+                <button class="action-btn down-btn" onclick="event.stopPropagation();">▼</button>
+            </div>
+        </div>
+    `).join('');
 }
 
-// MODAL LOGIC
-function openProject(id) {
-    const p = projects.find(item => item.id === id);
-    const content = document.getElementById('modalContent');
-    content.innerHTML = `
-        <h1 style="font-size:3.5rem;">${p.name}</h1>
-        <p style="margin:20px 0; font-size:1.2rem; line-height:1.4;">${p.desc}</p>
-        <a href="https://${p.github}" target="_blank" class="big-brutal-btn" style="display:block; text-align:center; text-decoration:none;">VIEW_GITHUB_SOURCE</a>
-    `;
-    document.getElementById('projectModal').classList.remove('hidden');
+function triggerVibe(id, el) {
+    const impact = Math.round(10 * userPower);
+    const p = projects.find(x => x.id === id);
+    p.score += impact;
+    document.getElementById(`score-${id}`).innerText = p.score;
+
+    const card = document.getElementById(`card-${id}`);
+    card.classList.add('shake-impact');
+    setTimeout(() => card.classList.remove('shake-impact'), 200);
+
+    const hit = document.createElement('div');
+    hit.className = 'vibe-meter-hit';
+    hit.innerText = `+${impact}_VIBE`;
+    hit.style.left = el.getBoundingClientRect().left + "px";
+    hit.style.top = el.getBoundingClientRect().top + "px";
+    document.body.appendChild(hit);
+    setTimeout(() => hit.remove(), 800);
 }
 
-document.getElementById('closeModal').onclick = () => document.getElementById('projectModal').classList.add('hidden');
+// --- NAVIGATION & UI ---
+document.getElementById('pulseBtn').onclick = () => { activeFeed = 'pulse'; switchFeed('pulseBtn'); };
+document.getElementById('rawBtn').onclick = () => { activeFeed = 'raw'; switchFeed('rawBtn'); };
 
-function vote(id, val) {
-    const p = projects.find(item => item.id === id);
-    p.score += val;
+function switchFeed(btnId) {
+    document.querySelectorAll('.feed-toggle').forEach(t => t.classList.remove('active'));
+    document.getElementById(btnId).classList.add('active');
     loadArena();
 }
 
-// TAB NAVIGATION
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.onclick = () => {
-        if (!btn.dataset.tab) return;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
         btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.remove('hidden');
     };
 });
+
+function updateLeaderboard() {
+    const list = document.getElementById('whaleList');
+    list.innerHTML = whales.map((w, i) => `
+        <div class="whale-item">
+            <span style="font-size:0.5rem">#${i+1}</span><br>
+            <b>${w.name}</b><br>${w.power}
+        </div>
+    `).join('');
+}
+
+// GITHUB MODAL
+document.querySelector('.github-btn').onclick = () => document.getElementById('githubModal').classList.remove('hidden');
+document.getElementById('confirmGH').onclick = () => {
+    document.querySelector('.github-btn').innerText = "CONNECTED: @DEV";
+    document.querySelector('.github-btn').style.background = "var(--lime)";
+    document.getElementById('githubModal').classList.add('hidden');
+};
+document.getElementById('cancelGH').onclick = () => document.getElementById('githubModal').classList.add('hidden');
