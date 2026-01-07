@@ -1,188 +1,69 @@
-/* --- THEME DEFINITIONS --- */
 :root[data-theme="dark"] { 
-    --bg: #000; 
-    --card: #0a0a0a; 
-    --text: #fff; 
-    --border: #1a1a1a; 
-    --lime: #a3ff00;
-    --gold: #FFD700;
+    --bg: #000; --card: #0a0a0a; --text: #fff; --border: #1a1a1a; --lime: #a3ff00; --gold: #FFD700; 
 }
 :root[data-theme="light"] { 
-    --bg: #fff; 
-    --card: #f7f7f7; 
-    --text: #000; 
-    --border: #eee; 
-    --lime: #82cc00;
-    --gold: #DAA520;
+    --bg: #fff; --card: #f7f7f7; --text: #000; --border: #eee; --lime: #82cc00; --gold: #DAA520; 
 }
 
-/* --- CORE RESET --- */
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-    -webkit-tap-highlight-color: transparent; 
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
 
-body { 
-    background: var(--bg); 
-    color: var(--text); 
-    overflow: hidden; 
-    height: 100vh; 
-    width: 100vw; 
-    position: fixed; 
-}
+body { background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; width: 100vw; position: fixed; }
 
-/* --- ARENA SNAP FEED --- */
+/* --- CORE SNAP CONTAINER --- */
 .snap-container { 
-    height: 100vh; 
-    width: 100vw; 
-    overflow-y: scroll; 
-    overflow-x: hidden; 
-    -webkit-overflow-scrolling: touch; 
-    scrollbar-width: none;
+    height: 100vh; width: 100vw; overflow-y: scroll; overflow-x: hidden; 
+    scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; 
 }
 .snap-container::-webkit-scrollbar { display: none; }
 
-[data-view="snap"] .snap-container { 
-    scroll-snap-type: y mandatory; 
-}
-
-/* THE PROJECT CARD */
 .art-card { 
-    height: 100vh; 
-    width: 100vw; 
-    scroll-snap-align: start; 
-    scroll-snap-stop: always;
-    position: relative; 
-    border-bottom: 1px solid var(--border);
+    height: 100vh; width: 100vw; scroll-snap-align: start; scroll-snap-stop: always; 
+    position: relative; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
 }
 
-.collection-slider { 
-    display: flex; 
-    width: 100%; 
-    height: 100%; 
-    overflow-x: scroll; 
-    scroll-snap-type: x mandatory; 
-    scrollbar-width: none; 
-}
-
-.collection-slide { 
-    flex: 0 0 100vw; 
-    width: 100vw; 
-    height: 100vh; 
-    scroll-snap-align: start; 
-    display: flex; 
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center; 
-    background: var(--bg); 
-    padding: 40px;
-    text-align: center;
-}
-
-/* --- HEADERS & CONTROLS --- */
-header { 
-    position: fixed; 
-    top: 0; 
-    width: 100%; 
-    z-index: 1000; 
-    padding: 15px 20px; 
-    background: var(--bg); 
-    border-bottom: 1px solid var(--border); 
-}
-
+/* --- HEADER & UI --- */
+header { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 15px 20px; background: var(--bg); border-bottom: 1px solid var(--border); }
 .logo-row { display: flex; justify-content: center; align-items: center; margin-bottom: 15px; position: relative; }
-h1 { font-size: 20px; letter-spacing: 0.3em; font-weight: 900; text-transform: uppercase; }
-.icon-btn { background: none; border: none; color: var(--text); cursor: pointer; position: absolute; right: 0; font-size: 18px; }
-
-.search-box { 
-    background: var(--card); 
-    border-radius: 8px; 
-    padding: 0 15px; 
-    display: flex; 
-    border: 1px solid var(--border); 
-    margin-bottom: 10px; 
-    align-items: center; 
-}
+h1 { font-size: 18px; letter-spacing: 0.3em; font-weight: 900; }
+.search-box { background: var(--card); border-radius: 8px; padding: 0 15px; display: flex; border: 1px solid var(--border); margin-bottom: 10px; align-items: center; }
 input { background: transparent; border: none; color: var(--text); flex: 1; padding: 10px 0; outline: none; font-size: 12px; font-weight: 700; }
-#goBtn { background: none; border: none; color: var(--lime); cursor: pointer; font-weight: 900; font-size: 12px; padding-left: 10px; }
+#goBtn { background: none; border: none; color: var(--lime); cursor: pointer; font-weight: 900; }
 
-.controls-row { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-#shuffleBtn { background: var(--border); border: none; color: var(--text); padding: 6px 12px; border-radius: 4px; font-size: 9px; font-weight: 900; cursor: pointer; }
+.launch-header { position: absolute; top: 185px; left: 20px; right: 20px; display: flex; justify-content: space-between; z-index: 20; }
+.status-pill { font-size: 10px; font-weight: 900; background: var(--lime); color: #000; padding: 4px 10px; border-radius: 4px; }
+.status-pill.gold { background: var(--gold); box-shadow: 0 0 15px var(--gold); }
+.pulse { animation: statusPulse 1.5s infinite; }
+@keyframes statusPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-.dropdown-group { display: flex; gap: 12px; }
-#chainSelect, #sortSelect { background: transparent; color: var(--text); border: none; font-size: 10px; font-weight: 800; outline: none; text-transform: uppercase; cursor: pointer; }
+/* --- TERMINAL VIEW --- */
+.terminal-view { width: 90%; max-width: 400px; background: rgba(10, 10, 10, 0.9); border: 1px solid var(--border); padding: 30px; text-align: left; backdrop-filter: blur(10px); }
+.project-title { font-size: 28px; letter-spacing: -1px; margin-bottom: 15px; color: var(--lime); }
+.art-card.graduated .project-title { color: var(--gold); }
 
-/* --- TOAST & INDICATORS --- */
-#assetToast { 
-    position: fixed; 
-    bottom: 100px; 
-    left: 50%; 
-    transform: translateX(-50%) translateY(20px); 
-    background: var(--lime); 
-    color: #000; 
-    padding: 10px 20px; 
-    border-radius: 4px; 
-    font-size: 10px; 
-    font-weight: 900; 
-    z-index: 5000; 
-    opacity: 0; 
-    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-    box-shadow: 0 5px 15px rgba(163, 255, 0, 0.2);
-}
-#assetToast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.progress-container { margin: 20px 0; }
+.progress-bar-bg { height: 6px; background: #222; width: 100%; margin-bottom: 8px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: var(--lime); transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.art-card.graduated .progress-bar-fill { background: var(--gold); box-shadow: 0 0 15px var(--gold); }
+.progress-stats { display: flex; justify-content: space-between; font-size: 9px; font-weight: 900; opacity: 0.6; }
 
-#refreshIndicator { 
-    width: 100%; display: flex; flex-direction: column; align-items: center; padding: 20px 0; 
-    font-size: 9px; font-weight: 900; opacity: 0; position: absolute; top: 180px; z-index: 100; color: var(--lime);
-}
+.mission-text { font-size: 12px; line-height: 1.5; opacity: 0.8; border-left: 2px solid var(--lime); padding-left: 12px; }
 
-/* --- UI BADGES --- */
-.collection-counter { 
-    position: absolute; top: 185px; right: 20px; 
-    background: var(--lime); color: #000; 
-    padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 900; z-index: 10; 
-}
+/* --- ACTIONS & TICKER --- */
+.launch-actions { position: absolute; bottom: 100px; left: 20px; right: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.stat-box { grid-column: span 2; background: var(--card); border: 1px solid var(--border); padding: 12px; display: flex; justify-content: space-between; font-size: 11px; font-weight: 900; }
+.launch-btn { background: var(--lime); color: #000; border: none; padding: 15px; font-weight: 900; cursor: pointer; border-radius: 4px; }
+.mint-btn { background: transparent; border: 1px solid var(--text); color: var(--text); padding: 15px; font-weight: 900; border-radius: 4px; }
 
-.chain-badge { padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
-.badge-base { background: var(--card); color: var(--lime); border: 1px solid var(--lime); }
+.ticker-wrap { position: absolute; bottom: 75px; width: 100%; background: var(--lime); color: #000; overflow: hidden; padding: 4px 0; font-size: 9px; font-weight: 900; }
+.ticker { white-space: nowrap; display: inline-block; animation: tickerMove 15s linear infinite; }
+@keyframes tickerMove { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
 
-/* --- GRID VIEW OVERRIDE --- */
-[data-view="grid"] .snap-container { scroll-snap-type: none !important; display: block !important; padding-top: 180px; padding-bottom: 100px; }
-[data-view="grid"] .art-card { height: auto !important; aspect-ratio: 1/1 !important; border: 1px solid var(--border); }
-[data-view="grid"] .collection-counter { display: none; }
-[data-view="grid"] .collection-slide h2 { font-size: 14px !important; }
-
-/* --- MODAL --- */
-.modal { position: fixed; inset: 0; z-index: 3000; background: var(--bg); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; }
-.modal-content { width: 100%; min-height: 100%; display: flex; flex-direction: column; position: relative; }
-.modal-header-actions { position: fixed; top: 20px; right: 20px; z-index: 3200; }
-.modal-icon-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); width: 40px; height: 40px; border-radius: 50%; font-weight: 900; }
-
-.modal-body { flex: 1; padding: 100px 25px; display: flex; flex-direction: column; align-items: center; }
-.modal-text-content { width: 100%; max-width: 500px; margin-top: 30px; line-height: 1.6; font-size: 14px; color: rgba(255,255,255,0.7); }
-
-.os-btn, .save-btn { 
-    display: block; width: 100%; padding: 16px; text-align: center; border-radius: 8px; 
-    font-weight: 900; text-decoration: none; margin-top: 15px; font-size: 12px;
-}
-.os-btn { background: var(--lime); color: #000; }
-.save-btn { border: 1px solid var(--border); color: var(--text); background: var(--card); }
-
-/* --- BOTTOM NAV --- */
-#bottomNav { 
-    position: fixed; bottom: 0; width: 100%; height: 75px; 
-    background: var(--bg); display: flex; justify-content: center; gap: 40px; 
-    padding-top: 15px; border-top: 1px solid var(--border); z-index: 1000; 
-}
-.nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; opacity: 0.3; color: var(--text); cursor: pointer; transition: 0.2s; }
+/* --- MODAL & NAV --- */
+.modal { position: fixed; inset: 0; z-index: 3000; background: var(--bg); padding: 20px; display: flex; align-items: center; justify-content: center; }
+.modal.hidden { display: none; }
+#bottomNav { position: fixed; bottom: 0; width: 100%; height: 70px; background: var(--bg); display: flex; justify-content: center; gap: 50px; border-top: 1px solid var(--border); padding-top: 10px; }
+.nav-item { opacity: 0.3; display: flex; flex-direction: column; align-items: center; font-size: 8px; font-weight: 900; cursor: pointer; color: var(--text); }
 .nav-item.active { opacity: 1; color: var(--lime); }
-.nav-item span { font-size: 8px; font-weight: 900; letter-spacing: 1px; }
 
-.hidden { display: none !important; }
-
-/* --- ANIMATIONS --- */
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top: 2px solid var(--lime); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 8px; }
+.snowflake { position: fixed; top: -10px; z-index: 9999; pointer-events: none; animation: fall 2s linear forwards; }
+@keyframes fall { to { transform: translateY(105vh) rotate(360deg); } }
