@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIBE/FUND | THE_ARENA</title>
+    <title>VIBE/FUND</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -27,13 +27,13 @@
     </section>
 
     <section id="homeScreen" class="main-layout hidden">
-        <div class="whale-banner black-bg white-text">
-            <marquee id="whaleTicker">TOP_WHALES: V_KONG (9.5x) • SOL_CHAD (7.2x) • DEGEN_REPT (5.0x) • ANON_0X (4.8x)</marquee>
-            <button id="showFullLeaderboard" class="banner-btn lime-bg">TOP_50</button>
+        <div class="whale-banner">
+            <marquee id="whaleTicker">TOP_WHALES: V_KONG (9.5x) • SOL_CHAD (7.2x) • DEGEN_REPT (5.0x)</marquee>
+            <button id="showFullLeaderboard" class="banner-btn">TOP_50</button>
         </div>
 
         <header class="dashboard-header">
-            <div class="logo-box lime-bg">V/F</div>
+            <div class="logo-box lime-bg" style="padding:10px; border:var(--border)">V/F</div>
             <div id="vibePowerCalc" class="power-calc">
                 <span class="label">POWER:</span>
                 <span id="powerLevel" class="value">1.00x</span>
@@ -51,28 +51,25 @@
         </main>
 
         <main id="submitTab" class="tab-content hidden">
-            <div class="submit-card">
-                <h2>LIST_PROJECT</h2>
-                <div class="form-group">
-                    <button class="github-btn white-bg">CONNECT_GITHUB</button>
-                    <input type="text" placeholder="REPO_URL">
-                    <button class="list-btn black-bg white-text">LIST_IN_ARENA</button>
-                </div>
+            <div class="gate-center">
+                <input type="text" placeholder="GITHUB_REPO_URL">
+                <button class="big-brutal-btn">LIST_PROJECT</button>
             </div>
         </main>
 
-        <div id="vibeCheckBar" class="upsell-bar hidden">VIBE_CHECK: HOLD 50K $VIBE FOR PRIORITY_FEED.</div>
+        <div id="vibeCheckBar" class="upsell-bar hidden">HOLD 50K $VIBE FOR PRIORITY_FEED.</div>
 
         <footer class="tab-footer">
             <button class="tab-btn active" data-tab="arenaTab">THE_ARENA</button>
-            <button class="tab-btn" data-tab="submitTab">SUBMIT</button>
+            <button class="tab-btn" data-tab="submitTab">SUBMIT_PROJECT</button>
         </footer>
     </section>
 
     <div id="leaderboardModal" class="modal-overlay hidden">
-        <div class="brutal-modal wide-modal">
-            <div class="modal-header">TOP_50_VIBE_HOLDERS <button onclick="closeModal('leaderboardModal')">X</button></div>
-            <div class="leaderboard-grid" id="fullLeaderboardList"></div>
+        <div class="brutal-modal" style="max-width: 600px;">
+            <h2 style="margin-bottom:20px">TOP_50_HOLDERS</h2>
+            <div id="fullLeaderboardList" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-family:monospace; font-size:0.8rem;"></div>
+            <button onclick="closeModal()" class="tab-btn" style="margin-top:20px; width:100%">CLOSE</button>
         </div>
     </div>
 
