@@ -34,7 +34,7 @@
 
         <header class="dashboard-header">
             <div class="logo-box lime-bg" style="padding:10px; border:var(--border)">V/F</div>
-            <div id="vibePowerCalc" class="power-calc">
+            <div class="power-calc">
                 <span class="label">POWER:</span>
                 <span id="powerLevel" class="value">1.00x</span>
                 <div class="power-bar-bg"><div id="powerBarFill" class="power-fill"></div></div>
@@ -51,13 +51,20 @@
         </main>
 
         <main id="submitTab" class="tab-content hidden">
-            <div class="gate-center">
-                <input type="text" placeholder="GITHUB_REPO_URL">
-                <button class="big-brutal-btn">LIST_PROJECT</button>
+            <div class="submit-page-wrapper">
+                <div class="submit-header">
+                    <h2>LIST_YOUR_PROJECT</h2>
+                    <p class="lime-bg">REMINDER: HOLD 50K $VIBE FOR PRIORITY_FEED PLACEMENT.</p>
+                </div>
+                <div class="submit-form">
+                    <input type="text" id="projName" placeholder="PROJECT_NAME">
+                    <input type="text" id="projGithub" placeholder="GITHUB_URL">
+                    <input type="text" id="projSite" placeholder="WEBSITE_URL">
+                    <textarea id="projDesc" placeholder="PROJECT_DESCRIPTION (MAX 200 CHARS)"></textarea>
+                    <button class="big-brutal-btn black-bg white-text" onclick="submitProject()">LIST_IN_ARENA</button>
+                </div>
             </div>
         </main>
-
-        <div id="vibeCheckBar" class="upsell-bar hidden">HOLD 50K $VIBE FOR PRIORITY_FEED.</div>
 
         <footer class="tab-footer">
             <button class="tab-btn active" data-tab="arenaTab">THE_ARENA</button>
@@ -65,11 +72,23 @@
         </footer>
     </section>
 
+    <div id="descModal" class="modal-overlay hidden">
+        <div class="brutal-modal">
+            <h2 id="modalTitle">PROJ_NAME</h2>
+            <p id="modalBody" style="margin: 20px 0; font-family: monospace;"></p>
+            <div style="display: flex; gap: 10px;">
+                <a id="modalGithub" href="#" target="_blank" class="tab-btn" style="flex:1; text-align:center; text-decoration:none; color:black;">GITHUB</a>
+                <a id="modalSite" href="#" target="_blank" class="tab-btn" style="flex:1; text-align:center; text-decoration:none; color:black;">SITE</a>
+            </div>
+            <button onclick="closeModal('descModal')" class="tab-btn" style="margin-top:20px; width:100%; background:var(--black); color:white;">CLOSE</button>
+        </div>
+    </div>
+
     <div id="leaderboardModal" class="modal-overlay hidden">
         <div class="brutal-modal" style="max-width: 600px;">
             <h2 style="margin-bottom:20px">TOP_50_HOLDERS</h2>
-            <div id="fullLeaderboardList" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-family:monospace; font-size:0.8rem;"></div>
-            <button onclick="closeModal()" class="tab-btn" style="margin-top:20px; width:100%">CLOSE</button>
+            <div id="fullLeaderboardList" class="leaderboard-grid"></div>
+            <button onclick="closeModal('leaderboardModal')" class="tab-btn" style="margin-top:20px; width:100%">CLOSE</button>
         </div>
     </div>
 
