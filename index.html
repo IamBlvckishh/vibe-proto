@@ -13,11 +13,10 @@
             <h1 class="logo-text">VIBE/FUND</h1>
             <div class="status-box">SYSTEM_READY</div>
         </header>
-
         <div class="gate-center">
             <div class="input-container">
                 <label>WALLET_ADDRESS</label>
-                <input type="text" id="walletInput" placeholder="PASTE SOLANA ADDRESS..." autocomplete="off">
+                <input type="text" id="walletInput" placeholder="PASTE SOLANA ADDRESS...">
             </div>
             <button id="scanBtn" class="big-brutal-btn">
                 <span class="btn-text">INITIALIZE_SCAN</span>
@@ -28,10 +27,10 @@
     </section>
 
     <section id="homeScreen" class="main-layout hidden">
-        <aside class="leaderboard-vibe">
-            <div class="leaderboard-header black-bg lime-text">TOP_WHALES</div>
-            <div id="whaleList" class="whale-list"></div>
-        </aside>
+        <div class="whale-banner black-bg white-text">
+            <marquee id="whaleTicker">TOP_WHALES: V_KONG (9.5x) • SOL_CHAD (7.2x) • DEGEN_REPT (5.0x) • ANON_0X (4.8x)</marquee>
+            <button id="showFullLeaderboard" class="banner-btn lime-bg">TOP_50</button>
+        </div>
 
         <header class="dashboard-header">
             <div class="logo-box lime-bg">V/F</div>
@@ -57,33 +56,23 @@
                 <div class="form-group">
                     <button class="github-btn white-bg">CONNECT_GITHUB</button>
                     <input type="text" placeholder="REPO_URL">
-                    <textarea placeholder="DESCRIPTION"></textarea>
                     <button class="list-btn black-bg white-text">LIST_IN_ARENA</button>
                 </div>
             </div>
         </main>
 
-        <div id="vibeCheckBar" class="upsell-bar hidden">
-            HOLD 50K $VIBE TO MOVE TO THE PRIORITY_PULSE FEED.
-        </div>
+        <div id="vibeCheckBar" class="upsell-bar hidden">VIBE_CHECK: HOLD 50K $VIBE FOR PRIORITY_FEED.</div>
 
         <footer class="tab-footer">
             <button class="tab-btn active" data-tab="arenaTab">THE_ARENA</button>
-            <button class="tab-btn" data-tab="submitTab">SUBMIT_PROJECT</button>
+            <button class="tab-btn" data-tab="submitTab">SUBMIT</button>
         </footer>
     </section>
 
-    <div id="githubModal" class="modal-overlay hidden">
-        <div class="brutal-modal github-auth-box">
-            <div class="auth-header black-bg white-text">GITHUB_SECURE_AUTH</div>
-            <div class="auth-body">
-                <div class="github-icon-mock">GH</div>
-                <h3>AUTHORIZE VIBE/FUND?</h3>
-                <div class="auth-actions">
-                    <button id="confirmGH" class="auth-btn lime-bg">ALLOW_ACCESS</button>
-                    <button id="cancelGH" class="auth-btn white-bg">CANCEL</button>
-                </div>
-            </div>
+    <div id="leaderboardModal" class="modal-overlay hidden">
+        <div class="brutal-modal wide-modal">
+            <div class="modal-header">TOP_50_VIBE_HOLDERS <button onclick="closeModal('leaderboardModal')">X</button></div>
+            <div class="leaderboard-grid" id="fullLeaderboardList"></div>
         </div>
     </div>
 
