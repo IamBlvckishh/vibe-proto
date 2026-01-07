@@ -3,47 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V/F ARENA</title>
+    <title>V/F | ENTER</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <section id="gate" class="brutal-container">
-        <div class="brutal-card lime-bg">
-            <h1 class="black-text">VIBE/FUND</h1>
-            <p class="mono">SCAN_WALLET_TO_ENTER_ARENA</p>
-            <div class="input-row">
-                <input type="text" id="walletInput" placeholder="SOLANA_ADDR...">
-                <button id="enterBtn" class="black-bg white-text">SCAN</button>
-            </div>
-        </div>
-    </section>
-
-    <section id="dashboard" class="hidden">
-        <header class="brutal-nav">
-            <div class="brutal-tag black-bg lime-text">1B VIBE DETECTED</div>
-            <div class="logo-box lime-bg black-text">V/F</div>
+    <div class="main-gate">
+        <header class="gate-header">
+            <h1 class="logo-text">VIBE/FUND</h1>
+            <div class="status-box">SYSTEM_READY</div>
         </header>
 
-        <main id="arena" class="tab-content active">
-            <h2 class="section-title">THE_ARENA</h2>
-            <div class="project-grid" id="grid"></div>
-        </main>
-
-        <main id="submit" class="tab-content">
-            <div class="brutal-card white-bg submit-box">
-                <h2 class="black-text">SUBMIT_PROJECT</h2>
-                <button class="github-btn lime-bg black-text">CONNECT GITHUB</button>
-                <input type="text" placeholder="REPO_URL">
-                <textarea placeholder="PROJECT_VIBE_DESC"></textarea>
-                <button id="uploadBtn" class="black-bg white-text">LIST_PROJECT</button>
+        <section class="gate-center">
+            <div class="input-container">
+                <label for="walletInput">WALLET_ADDRESS</label>
+                <input type="text" id="walletInput" placeholder="PASTE SOLANA ADDRESS..." autocomplete="off">
             </div>
-        </main>
+            
+            <button id="scanBtn" class="big-brutal-btn">
+                <span class="btn-text">INITIALIZE_SCAN</span>
+                <div class="scan-bar"></div>
+            </button>
+        </section>
 
-        <footer class="brutal-footer">
-            <button class="tab-btn active" data-tab="arena">ARENA</button>
-            <button class="tab-btn" data-tab="submit">SUBMIT</button>
+        <footer class="gate-footer">
+            <p>DESIGNED_FOR_THE_1B_VIBE_SUPPLY</p>
         </footer>
-    </section>
+    </div>
 
     <script src="script.js"></script>
 </body>
