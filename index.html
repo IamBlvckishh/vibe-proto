@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,112 +8,67 @@
 </head>
 <body>
 
-    <section id="gateScreen" class="main-layout">
-        <header class="gate-header">
-            <h1 class="logo-text">VIBE/FUND</h1>
-            <div class="status-box">SYSTEM_READY</div>
-        </header>
-        <div class="gate-center">
-            <div class="input-container">
-                <label>WALLET_ADDRESS</label>
-                <input type="text" id="walletInput" placeholder="PASTE SOLANA ADDRESS...">
-            </div>
-            <button id="scanBtn" class="big-brutal-btn">
-                <span class="btn-text">INITIALIZE_SCAN</span>
-                <div class="scan-bar"></div>
-            </button>
-            <div id="logTerminal" class="log-terminal hidden"></div>
+    <div id="assetToast">VOTE_RECORDED</div>
+
+    <header id="mainHeader">
+        <div class="logo-row">
+            <h1>VIBE/FUND</h1>
+            <button class="icon-btn" onclick="toggleTheme()">🌓</button>
         </div>
-    </section>
-
-    <section id="homeScreen" class="main-layout hidden">
-        <div class="whale-banner">
-            <marquee id="whaleTicker">TOP_WHALES: V_KONG (9.5x) • SOL_CHAD (7.2x) • DEGEN_REPT (5.0x) • ANON_0X (4.8x)</marquee>
-            <button id="showFullLeaderboard" class="banner-btn">TOP_50</button>
+        <div class="search-box">
+            <input type="text" id="walletInput" placeholder="INITIALIZE_WALLET_SCAN...">
+            <button id="goBtn" onclick="initializeScan()">GO</button>
         </div>
-
-        <header class="dashboard-header">
-            <div class="logo-box lime-bg" style="padding:10px; border:var(--border)">V/F</div>
-            <div class="power-calc">
-                <span class="label">POWER:</span>
-                <span id="powerLevel" class="value">1.00x</span>
-                <div class="power-bar-bg"><div id="powerBarFill" class="power-fill"></div></div>
+        <div class="controls-row">
+            <div class="dropdown-group">
+                <select id="sortSelect" onchange="loadArena()">
+                    <option value="HOT">SORT: HOT</option>
+                    <option value="NEW">SORT: NEW</option>
+                </select>
+                <select id="chainSelect" onchange="setCategory(this.value)">
+                    <option value="ALL">CAT: ALL</option>
+                    <option value="DEFI">DEFI</option>
+                    <option value="TOOLS">TOOLS</option>
+                    <option value="MEME">MEME</option>
+                </select>
             </div>
-        </header>
-
-        <div id="arenaControls">
-            <nav class="feed-nav">
-                <button class="feed-toggle active" id="pulseBtn">CURATED_PULSE</button>
-                <button class="feed-toggle" id="rawBtn">RAW_STREAM</button>
-            </nav>
-            <div class="filter-bar" id="categoryFilters">
-                <button class="filter-tag active" onclick="setCategory('ALL')">ALL</button>
-                <button class="filter-tag" onclick="setCategory('DEFI')">DEFI</button>
-                <button class="filter-tag" onclick="setCategory('TOOLS')">TOOLS</button>
-                <button class="filter-tag" onclick="setCategory('NFT/ART')">NFT</button>
-                <button class="filter-tag" onclick="setCategory('INFRA')">INFRA</button>
-                <button class="filter-tag" onclick="setCategory('MEME')">MEME</button>
-            </div>
+            <button id="shuffleBtn" onclick="shuffleProjects()">SHUFFLE</button>
         </div>
+    </header>
 
-        <main id="arenaTab" class="tab-content active">
-            <div class="feed-container" id="projectFeed"></div>
+    <div id="refreshIndicator">
+        <div class="spinner"></div>
+        <span>SYNCING_ARENA</span>
+    </div>
+
+    <main class="snap-container" id="projectFeed" data-view="snap">
         </main>
 
-        <main id="fundedTab" class="tab-content hidden">
-            <div class="funded-wrapper">
-                <div class="funded-header">
-                    <h2 class="gold-text">VIBE_GRADUATES</h2>
-                    <p class="black-bg white-text" style="display:inline-block; padding:5px 10px;">SUCCESSFULLY FUNDED PROJECTS</p>
-                </div>
-                <div id="fundedGrid" class="funded-grid"></div>
-            </div>
-        </main>
+    <nav id="bottomNav">
+        <div class="nav-item active" onclick="switchTab('snap')">
+            <span style="font-size: 18px;">🔥</span>
+            <span>ARENA</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('grid')">
+            <span style="font-size: 18px;">🏆</span>
+            <span>HALL</span>
+        </div>
+    </nav>
 
-        <main id="submitTab" class="tab-content hidden">
-            <div class="submit-page-wrapper">
-                <div class="submit-header">
-                    <h2>LIST_PROJECT</h2>
-                    <p class="lime-bg" style="padding: 5px; font-weight: 900; margin-bottom: 15px; border: 2px solid black;">HOLD 50K $VIBE FOR PRIORITY_FEED.</p>
-                </div>
-                <div class="category-leaderboard">
-                    <div class="stat-header black-bg white-text" style="padding:5px; text-align:center; font-size:0.7rem;">ARENA_HEAT_MAP (TOTAL_VIBES)</div>
-                    <div id="categoryStats" class="stat-grid"></div>
-                </div>
-                <div class="submit-form">
-                    <input type="text" id="projName" placeholder="PROJECT_NAME">
-                    <select id="projCategory" class="brutal-select">
-                        <option value="DEFI">CAT: DEFI</option>
-                        <option value="TOOLS">CAT: TOOLS</option>
-                        <option value="NFT/ART">CAT: NFT/ART</option>
-                        <option value="INFRA">CAT: INFRA</option>
-                        <option value="MEME">CAT: MEME</option>
-                    </select>
-                    <input type="text" id="projGithub" placeholder="GITHUB_URL">
-                    <input type="text" id="projSite" placeholder="WEBSITE_URL">
-                    <textarea id="projDesc" placeholder="DESCRIPTION (MAX 200 CHARS)"></textarea>
-                    <button class="big-brutal-btn black-bg white-text" onclick="submitProject()">LIST_IN_ARENA</button>
+    <div id="projectModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header-actions">
+                <button class="modal-icon-btn" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <h1 id="modalTitle" style="margin-bottom: 10px;">PROJ_NAME</h1>
+                <div id="modalCategory" class="chain-badge badge-base">CATEGORY</div>
+                <div class="modal-text-content">
+                    <p id="modalBody"></p>
+                    <a id="modalSite" href="#" class="os-btn">VIEW_PROJECT</a>
+                    <button class="save-btn" onclick="closeModal()">BACK_TO_ARENA</button>
                 </div>
             </div>
-        </main>
-
-        <footer class="tab-footer">
-            <button class="tab-btn active" data-tab="arenaTab">ARENA</button>
-            <button class="tab-btn" data-tab="fundedTab">HALL_OF_FAME</button>
-            <button class="tab-btn" data-tab="submitTab">SUBMIT</button>
-        </footer>
-    </section>
-
-    <div id="descModal" class="modal-overlay hidden">
-        <div class="brutal-modal">
-            <div id="modalCategory" class="category-badge lime-bg" style="display:inline-block; padding:5px 10px; border:2px solid black; font-weight:900; font-size:0.7rem;">CATEGORY</div>
-            <h2 id="modalTitle" style="margin-top:10px">PROJ_NAME</h2>
-            <p id="modalBody" style="margin: 20px 0; font-family: monospace; line-height:1.4;"></p>
-            <div style="display: flex; gap: 10px;">
-                <a id="modalGithub" href="#" target="_blank" class="tab-btn" style="flex:1; text-align:center; text-decoration:none; color:black;">GITHUB</a>
-                <a id="modalSite" href="#" target="_blank" class="tab-btn" style="flex:1; text-align:center; text-decoration:none; color:black;">SITE</a>
-            </div>
-            <button onclick="closeModal('descModal')" class="tab-btn" style="margin-top:20px; width:100%; background:black; color:white;">CLOSE</button>
         </div>
     </div>
 
