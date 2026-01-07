@@ -22,10 +22,16 @@
                 <span class="btn-text">INITIALIZE_SCAN</span>
                 <div class="scan-bar"></div>
             </button>
+            <div id="logTerminal" class="log-terminal hidden"></div>
         </div>
     </section>
 
     <section id="homeScreen" class="main-layout hidden">
+        <div class="whale-banner">
+            <marquee id="whaleTicker">TOP_WHALES: V_KONG (9.5x) • SOL_CHAD (7.2x) • DEGEN_REPT (5.0x) • ANON_0X (4.8x)</marquee>
+            <button id="showFullLeaderboard" class="banner-btn">TOP_50</button>
+        </div>
+
         <header class="dashboard-header">
             <div class="logo-box lime-bg" style="padding:10px; border:var(--border)">V/F</div>
             <div class="power-calc">
@@ -35,36 +41,45 @@
             </div>
         </header>
 
-        <main id="arenaTab" class="tab-content active">
-            <div id="arenaControls">
-                <div class="whale-banner">
-                    <marquee>TOP_WHALES: V_KONG (9.5x) • SOL_CHAD (7.2x) • DEGEN_REPT (5.0x)</marquee>
-                </div>
-                <nav class="feed-nav">
-                    <button class="feed-toggle active" id="pulseBtn">PULSE</button>
-                    <button class="feed-toggle" id="rawBtn">RAW</button>
-                </nav>
-                <div class="filter-bar">
-                    <button class="filter-tag active" onclick="setCategory('ALL')">ALL</button>
-                    <button class="filter-tag" onclick="setCategory('DEFI')">DEFI</button>
-                    <button class="filter-tag" onclick="setCategory('TOOLS')">TOOLS</button>
-                    <button class="filter-tag" onclick="setCategory('MEME')">MEME</button>
-                </div>
+        <div id="arenaControls">
+            <nav class="feed-nav">
+                <button class="feed-toggle active" id="pulseBtn">CURATED_PULSE</button>
+                <button class="feed-toggle" id="rawBtn">RAW_STREAM</button>
+            </nav>
+            <div class="filter-bar" id="categoryFilters">
+                <button class="filter-tag active" onclick="setCategory('ALL')">ALL</button>
+                <button class="filter-tag" onclick="setCategory('DEFI')">DEFI</button>
+                <button class="filter-tag" onclick="setCategory('TOOLS')">TOOLS</button>
+                <button class="filter-tag" onclick="setCategory('NFT/ART')">NFT</button>
+                <button class="filter-tag" onclick="setCategory('INFRA')">INFRA</button>
+                <button class="filter-tag" onclick="setCategory('MEME')">MEME</button>
             </div>
+        </div>
+
+        <main id="arenaTab" class="tab-content active">
             <div class="feed-container" id="projectFeed"></div>
         </main>
 
         <main id="fundedTab" class="tab-content hidden">
             <div class="funded-wrapper">
-                <h2 class="gold-text">VIBE_GRADUATES</h2>
+                <div class="funded-header">
+                    <h2 class="gold-text">VIBE_GRADUATES</h2>
+                    <p class="black-bg white-text" style="display:inline-block; padding:5px 10px;">SUCCESSFULLY FUNDED PROJECTS</p>
+                </div>
                 <div id="fundedGrid" class="funded-grid"></div>
             </div>
         </main>
 
         <main id="submitTab" class="tab-content hidden">
             <div class="submit-page-wrapper">
-                <div class="submit-header"><h2>LIST_PROJECT</h2></div>
-                <div id="categoryStats" class="stat-grid"></div>
+                <div class="submit-header">
+                    <h2>LIST_PROJECT</h2>
+                    <p class="lime-bg" style="padding: 5px; font-weight: 900; margin-bottom: 15px; border: 2px solid black;">HOLD 50K $VIBE FOR PRIORITY_FEED.</p>
+                </div>
+                <div class="category-leaderboard">
+                    <div class="stat-header black-bg white-text" style="padding:5px; text-align:center; font-size:0.7rem;">ARENA_HEAT_MAP (TOTAL_VIBES)</div>
+                    <div id="categoryStats" class="stat-grid"></div>
+                </div>
                 <div class="submit-form">
                     <input type="text" id="projName" placeholder="PROJECT_NAME">
                     <select id="projCategory" class="brutal-select">
@@ -74,7 +89,9 @@
                         <option value="INFRA">CAT: INFRA</option>
                         <option value="MEME">CAT: MEME</option>
                     </select>
-                    <textarea id="projDesc" placeholder="DESCRIPTION"></textarea>
+                    <input type="text" id="projGithub" placeholder="GITHUB_URL">
+                    <input type="text" id="projSite" placeholder="WEBSITE_URL">
+                    <textarea id="projDesc" placeholder="DESCRIPTION (MAX 200 CHARS)"></textarea>
                     <button class="big-brutal-btn black-bg white-text" onclick="submitProject()">LIST_IN_ARENA</button>
                 </div>
             </div>
@@ -82,17 +99,21 @@
 
         <footer class="tab-footer">
             <button class="tab-btn active" data-tab="arenaTab">ARENA</button>
-            <button class="tab-btn" data-tab="fundedTab">HALL</button>
+            <button class="tab-btn" data-tab="fundedTab">HALL_OF_FAME</button>
             <button class="tab-btn" data-tab="submitTab">SUBMIT</button>
         </footer>
     </section>
 
-    <div id="descModal" class="modal-overlay hidden" style="display: none;">
+    <div id="descModal" class="modal-overlay hidden">
         <div class="brutal-modal">
-            <div id="modalCategory" class="category-badge lime-bg">CATEGORY</div>
+            <div id="modalCategory" class="category-badge lime-bg" style="display:inline-block; padding:5px 10px; border:2px solid black; font-weight:900; font-size:0.7rem;">CATEGORY</div>
             <h2 id="modalTitle" style="margin-top:10px">PROJ_NAME</h2>
             <p id="modalBody" style="margin: 20px 0; font-family: monospace; line-height:1.4;"></p>
-            <button id="closeDescBtn" class="tab-btn" style="margin-top:20px; width:100%; background:black; color:white;">CLOSE</button>
+            <div style="display: flex; gap: 10px;">
+                <a id="modalGithub" href="#" target="_blank" class="tab-btn" style="flex:1; text-align:center; text-decoration:none; color:black;">GITHUB</a>
+                <a id="modalSite" href="#" target="_blank" class="tab-btn" style="flex:1; text-align:center; text-decoration:none; color:black;">SITE</a>
+            </div>
+            <button onclick="closeModal('descModal')" class="tab-btn" style="margin-top:20px; width:100%; background:black; color:white;">CLOSE</button>
         </div>
     </div>
 
