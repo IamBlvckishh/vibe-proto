@@ -15,7 +15,6 @@
             <h1>VIBE/FUND</h1>
             <button class="icon-btn" onclick="toggleTheme()">🌓</button>
         </div>
-        
         <div class="controls-row" id="filterControls">
             <select id="typeFilter" onchange="renderAll()">
                 <option value="ALL">ALL_TYPES</option>
@@ -23,7 +22,7 @@
                 <option value="NFT">NFT</option>
                 <option value="TOOL">TOOL</option>
             </select>
-            <div class="power-tag">VIBE_STRENGTH: 1.0x</div>
+            <div class="power-tag">NETWORK_LIVE</div>
         </div>
     </header>
 
@@ -33,14 +32,12 @@
     <main id="hallTab" class="tab-content hidden">
         <div class="hall-wrapper">
             <section class="hall-section">
-                <h3><span>💎</span> PULSE_PROJECTS <small>VIBE_HOLDERS_ONLY</small></h3>
+                <h3>💎 PULSE_PROJECTS</h3>
                 <div class="grid-layout" id="pulseGrid"></div>
             </section>
-            
             <hr class="brutal-hr">
-
             <section class="hall-section">
-                <h3><span>🌊</span> THE_STREAM <small>OPEN_ARENA</small></h3>
+                <h3>🌊 THE_STREAM</h3>
                 <div class="grid-layout" id="streamGrid"></div>
             </section>
         </div>
@@ -48,29 +45,42 @@
 
     <main id="submitTab" class="tab-content hidden">
         <div class="submit-form">
+            <button class="os-btn" id="connectBtn" onclick="this.innerText='0x71C...8921'">CONNECT_WALLET</button>
             <h2>LAUNCH_PROJECT</h2>
             <div class="input-group">
                 <label>PROJECT_IMAGE</label>
-                <input type="file" id="pImg" accept="image/*">
+                <input type="file" id="pImg" accept="image/*" onchange="handleImage(this)">
+            </div>
+            <div class="input-group">
+                <label>IMAGE_DIMMER: <span id="dimVal">60</span>%</label>
+                <input type="range" id="pDim" min="0" max="100" value="60" oninput="updateDimLabel(this.value)">
             </div>
             <input type="text" id="pTitle" placeholder="PROJECT_NAME">
             <textarea id="pDesc" placeholder="MISSION_DESCRIPTION"></textarea>
             <input type="text" id="pLink" placeholder="PROJECT_URL">
             <input type="text" id="pGithub" placeholder="GITHUB_REPO">
-            <button class="os-btn" onclick="submitProject()">INITIALIZE_LAUNCH</button>
+            <button class="os-btn" onclick="submitProject()" style="background:var(--lime); color:#000;">INITIALIZE_LAUNCH</button>
         </div>
     </main>
 
+    <div id="projectModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header-actions">
+                <button class="modal-icon-btn" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <h1 id="modalTitle"></h1>
+                <div id="modalCategory" class="chain-badge badge-base"></div>
+                <div class="modal-text-content" id="modalBody"></div>
+                <button class="os-btn" onclick="closeModal()">DISMISS</button>
+            </div>
+        </div>
+    </div>
+
     <nav id="bottomNav">
-        <div class="nav-item active" onclick="switchTab('arena')">
-            <span>🔥</span><small>ARENA</small>
-        </div>
-        <div class="nav-item" onclick="switchTab('hall')">
-            <span>🏆</span><small>HALL</small>
-        </div>
-        <div class="nav-item" onclick="switchTab('submit')">
-            <span>🚀</span><small>SUBMIT</small>
-        </div>
+        <div class="nav-item active" onclick="switchTab('arena')"><span>🔥</span><small>ARENA</small></div>
+        <div class="nav-item" onclick="switchTab('hall')"><span>🏆</span><small>HALL</small></div>
+        <div class="nav-item" onclick="switchTab('submit')"><span>🚀</span><small>SUBMIT</small></div>
     </nav>
 
     <script src="script.js"></script>
