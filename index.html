@@ -15,7 +15,7 @@
             <h1>VIBE/FUND</h1>
             <button class="icon-btn" onclick="toggleTheme()">🌓</button>
         </div>
-        <div class="controls-row" id="filterControls">
+        <div class="controls-row">
             <select id="typeFilter" onchange="renderAll()">
                 <option value="ALL">ALL_TYPES</option>
                 <option value="DEFI">DEFI</option>
@@ -46,7 +46,6 @@
     <main id="submitTab" class="tab-content hidden">
         <div class="submit-form">
             <button class="os-btn" id="connectBtn" onclick="this.innerText='0x71C...8921'">CONNECT_WALLET</button>
-            <h2>LAUNCH_PROJECT</h2>
             <div class="input-group">
                 <label>PROJECT_IMAGE</label>
                 <input type="file" id="pImg" accept="image/*" onchange="handleImage(this)">
@@ -58,16 +57,12 @@
             <input type="text" id="pTitle" placeholder="PROJECT_NAME">
             <textarea id="pDesc" placeholder="MISSION_DESCRIPTION"></textarea>
             <input type="text" id="pLink" placeholder="PROJECT_URL">
-            <input type="text" id="pGithub" placeholder="GITHUB_REPO">
-            <button class="os-btn" onclick="submitProject()" style="background:var(--lime); color:#000;">INITIALIZE_LAUNCH</button>
+            <button class="os-btn launch-ready" onclick="submitProject()">INITIALIZE_LAUNCH</button>
         </div>
     </main>
 
     <div id="projectModal" class="modal hidden">
         <div class="modal-content">
-            <div class="modal-header-actions">
-                <button class="modal-icon-btn" onclick="closeModal()">✕</button>
-            </div>
             <div class="modal-body">
                 <h1 id="modalTitle"></h1>
                 <div id="modalCategory" class="chain-badge badge-base"></div>
