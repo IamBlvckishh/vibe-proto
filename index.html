@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VIBE/FUND | THE_ARENA</title>
+    <title>VIBE/FUND | LAUNCHPAD</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
             <button class="icon-btn" onclick="toggleTheme()">🌓</button>
         </div>
         <div class="search-box">
-            <input type="text" id="walletInput" placeholder="INITIALIZE_WALLET_SCAN...">
+            <input type="text" id="walletInput" placeholder="SCAN_WALLET_FOR_POWER...">
             <button id="goBtn" onclick="initializeScan()">GO</button>
         </div>
         <div class="controls-row">
@@ -29,7 +29,6 @@
                     <option value="ALL">CAT: ALL</option>
                     <option value="DEFI">DEFI</option>
                     <option value="TOOLS">TOOLS</option>
-                    <option value="MEME">MEME</option>
                 </select>
             </div>
             <button id="shuffleBtn" onclick="shuffleProjects()">SHUFFLE</button>
@@ -46,11 +45,11 @@
 
     <nav id="bottomNav">
         <div class="nav-item active" onclick="switchTab('snap')">
-            <span style="font-size: 18px;">🔥</span>
+            <span>🔥</span>
             <span>ARENA</span>
         </div>
         <div class="nav-item" onclick="switchTab('grid')">
-            <span style="font-size: 18px;">🏆</span>
+            <span>🏆</span>
             <span>HALL</span>
         </div>
     </nav>
@@ -61,12 +60,12 @@
                 <button class="modal-icon-btn" onclick="closeModal()">✕</button>
             </div>
             <div class="modal-body">
-                <h1 id="modalTitle" style="margin-bottom: 10px;">PROJ_NAME</h1>
+                <h1 id="modalTitle">PROJ_NAME</h1>
                 <div id="modalCategory" class="chain-badge badge-base">CATEGORY</div>
                 <div class="modal-text-content">
                     <p id="modalBody"></p>
-                    <a id="modalSite" href="#" class="os-btn">VIEW_PROJECT</a>
-                    <button class="save-btn" onclick="closeModal()">BACK_TO_ARENA</button>
+                    <a id="modalSite" href="#" class="os-btn" target="_blank">VIEW_CONTRACT</a>
+                    <button class="save-btn" onclick="closeModal()">DISMISS</button>
                 </div>
             </div>
         </div>
