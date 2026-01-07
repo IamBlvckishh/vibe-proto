@@ -1,101 +1,64 @@
-// --- DATA STATE ---
 let projects = [
-    { id: 1, name: "PULSE_DEX", score: 2850, isWhale: true, desc: "High-speed swap for 1B supply." },
-    { id: 2, name: "NEON_VIBE", score: 2100, isWhale: true, desc: "Visualizer for whale movements." },
-    { id: 3, name: "GRID_CORE", score: 1400, isWhale: false, desc: "Decentralized storage layer." },
-    { id: 4, name: "RAW_TOOLS", score: 450, isWhale: false, desc: "Collection of CLI utils." },
-    { id: 5, name: "SHARD_X", score: 105, isWhale: false, desc: "Experimental sharding." }
+    { id: 1, name: "PULSE_DEX", score: 2500, isWhale: true },
+    { id: 2, name: "NEON_VIBE", score: 1800, isWhale: true },
+    { id: 3, name: "GRID_CORE", score: 1200, isWhale: false },
+    { id: 4, name: "RAW_TOOLS", score: 300, isWhale: false }
 ];
-
-const whales = ["VIBE_KONG (9.8x)", "SOL_CHAD (8.4x)", "DEGEN_REPT (6.2x)", "ANON_WHALE (5.5x)", "LIQUID_MOON (4.9x)"];
 
 let userBalance = 0;
 let userPower = 1.0;
 let activeFeed = 'pulse';
 
-// --- LOGIN & SCANNING ---
+// --- INITIAL SCAN ---
 document.getElementById('scanBtn').onclick = function() {
     const address = document.getElementById('walletInput').value;
     if (!address) return;
-
-    const btn = this;
-    btn.querySelector('.btn-text').innerText = "SYSTEM_SCANNING...";
-    btn.querySelector('.scan-bar').style.left = "0";
-    const terminal = document.getElementById('logTerminal');
-    terminal.classList.remove('hidden');
-
-    const scanLogs = [
-        "> CONNECTING_RPC...",
-        "> READING_BALANCE...",
-        "> CALCULATING_VIBE_POWER...",
-        "> ACCESS_GRANTED"
-    ];
-
-    scanLogs.forEach((log, i) => {
-        setTimeout(() => {
-            const line = document.createElement('div');
-            line.innerText = log;
-            terminal.appendChild(line);
-        }, i * 600);
-    });
-
+    this.querySelector('.btn-text').innerText = "SCANNING...";
+    this.querySelector('.scan-bar').style.left = "0";
+    document.getElementById('logTerminal').classList.remove('hidden');
+    
     setTimeout(() => {
-        // Logic: if address starts with '1', user is a Whale
-        userBalance = address.startsWith('1') ? 150000 : 5000;
+        userBalance = address.startsWith('1') ? 100000 : 5000;
         userPower = Math.max(1, userBalance / 10000);
-        
-        // Update UI Header
         document.getElementById('powerLevel').innerText = userPower.toFixed(2) + "x";
         document.getElementById('powerBarFill').style.width = Math.min(100, (userBalance/50000)*100) + "%";
         
         document.getElementById('gateScreen').classList.add('hidden');
         document.getElementById('homeScreen').classList.remove('hidden');
         loadArena();
-    }, 3200);
+    }, 3000);
 };
 
-// --- FUNDING LOGIC ---
-function getTopWinners() {
-    return [...projects].sort((a, b) => b.score - a.score).slice(0, 3).map(p => p.id);
-}
-
-// --- ARENA RENDERING ---
+// --- RENDER ARENA ---
 function loadArena() {
     const feed = document.getElementById('projectFeed');
-    const winners = getTopWinners();
+    const winners = [...projects].sort((a, b) => b.score - a.score).slice(0, 3).map(p => p.id);
     const filtered = projects.filter(p => activeFeed === 'pulse' ? p.isWhale : !p.isWhale);
-    const glowSize = (userPower * 25) + "px";
+    const glow = (userPower * 20) + "px";
 
-    feed.innerHTML = filtered.map(p => {
-        const isWinner = winners.includes(p.id) ? `<div class="winner-badge">WEEKLY_WINNER: FUNDED</div>` : '';
-        const cardType = p.isWhale ? 'obsidian' : '';
-        
-        return `
-            <div class="project-card ${cardType}" id="card-${p.id}" onclick="openDetail(${p.id})">
-                ${isWinner}
-                <div class="card-content">
-                    <h2 style="font-size: 5.5rem; letter-spacing: -6px; line-height: 0.8;">${p.name}</h2>
-                    <p style="margin-top: 20px; opacity: 0.4;">[ CLICK_FOR_DETAILS ]</p>
-                </div>
-                <div class="side-actions">
-                    <button class="action-btn up-btn" style="--glow-power: ${glowSize}" onclick="event.stopPropagation(); handleVote(${p.id}, 'up', this)">▲</button>
-                    <div class="score-tag" id="score-${p.id}">${p.score}</div>
-                    <button class="action-btn down-btn" onclick="event.stopPropagation(); handleVote(${p.id}, 'down', this)">▼</button>
-                </div>
+    feed.innerHTML = filtered.map(p => `
+        <div class="project-card ${p.isWhale ? 'obsidian' : ''}" id="card-${p.id}">
+            ${winners.includes(p.id) ? `<div class="winner-badge">FUNDING_ELIGIBLE</div>` : ''}
+            <div class="card-content">
+                <h2 style="font-size: 5rem; letter-spacing: -4px;">${p.name}</h2>
             </div>
-        `;
-    }).join('');
-    
-    // Random Upsell Bar
-    if(activeFeed === 'raw' && Math.random() > 0.6) {
-        const bar = document.getElementById('vibeCheckBar');
-        bar.classList.remove('hidden');
-        setTimeout(() => bar.classList.add('hidden'), 4000);
+            <div class="side-actions">
+                <button class="action-btn up-btn" style="--glow-power: ${glow}" onclick="vote(${p.id}, 'up', this)">▲</button>
+                <div class="score-tag" id="score-${p.id}">${p.score}</div>
+                <button class="action-btn down-btn" onclick="vote(${p.id}, 'down', this)">▼</button>
+            </div>
+        </div>
+    `).join('');
+
+    // Occasional Upsell
+    if(activeFeed === 'raw' && Math.random() > 0.7) {
+        document.getElementById('vibeCheckBar').classList.remove('hidden');
+        setTimeout(() => document.getElementById('vibeCheckBar').classList.add('hidden'), 4000);
     }
 }
 
-// --- VOTING SYSTEM ---
-function handleVote(id, type, el) {
+function vote(id, type, el) {
+    event.stopPropagation();
     const p = projects.find(x => x.id === id);
     const impact = Math.round(10 * userPower);
     const card = document.getElementById(`card-${id}`);
@@ -103,22 +66,20 @@ function handleVote(id, type, el) {
     if (type === 'up') {
         p.score += impact;
         card.classList.add('shake-impact');
-        showVibeMeter(el, `+${impact}_POWER`);
+        showHit(el, `+${impact}`);
     } else {
         p.score -= Math.floor(impact / 2);
         card.classList.add('glitch-impact');
     }
 
     document.getElementById(`score-${id}`).innerText = p.score;
-    
-    // Clean up animations
     setTimeout(() => {
         card.classList.remove('shake-impact');
         card.classList.remove('glitch-impact');
-    }, 400);
+    }, 300);
 }
 
-function showVibeMeter(el, text) {
+function showHit(el, text) {
     const hit = document.createElement('div');
     hit.className = 'vibe-meter-hit';
     hit.innerText = text;
@@ -128,7 +89,7 @@ function showVibeMeter(el, text) {
     setTimeout(() => hit.remove(), 800);
 }
 
-// --- NAVIGATION ---
+// --- TABS & MODALS ---
 document.getElementById('pulseBtn').onclick = () => { activeFeed = 'pulse'; toggleFeed('pulseBtn'); };
 document.getElementById('rawBtn').onclick = () => { activeFeed = 'raw'; toggleFeed('rawBtn'); };
 
@@ -147,27 +108,10 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     };
 });
 
-// --- LEADERBOARD & GITHUB ---
 document.getElementById('showFullLeaderboard').onclick = () => {
     const list = document.getElementById('fullLeaderboardList');
-    list.innerHTML = Array.from({length: 50}).map((_, i) => `
-        <div class="leaderboard-entry">#${i+1} ${Math.random().toString(36).substring(7).toUpperCase()}... [${Math.floor(Math.random()*200)}K $VIBE]</div>
-    `).join('');
+    list.innerHTML = Array.from({length: 50}).map((_, i) => `<div>#${i+1} ANON_WHALE_${Math.floor(Math.random()*999)}</div>`).join('');
     document.getElementById('leaderboardModal').classList.remove('hidden');
 };
 
-function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-document.querySelector('.github-btn').onclick = function() {
-    this.innerText = "WAITING_AUTH...";
-    setTimeout(() => {
-        document.getElementById('githubModal').classList.remove('hidden');
-    }, 500);
-};
-
-document.getElementById('confirmGH').onclick = () => {
-    const btn = document.querySelector('.github-btn');
-    btn.innerText = "CONNECTED: @DEV_WHALE";
-    btn.classList.add('lime-bg');
-    closeModal('githubModal');
-};
+function closeModal() { document.getElementById('leaderboardModal').classList.add('hidden'); }
