@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIBE/FUND | SYSTEM_ACCESS</title>
+    <title>VIBE/FUND | THE_ARENA</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,41 +23,48 @@
                 <span class="btn-text">INITIALIZE_SCAN</span>
                 <div class="scan-bar"></div>
             </button>
-            
             <div id="logTerminal" class="log-terminal hidden"></div>
         </div>
-        <footer class="gate-footer-clean"></footer>
     </section>
 
     <section id="homeScreen" class="main-layout hidden">
+        <aside class="leaderboard-vibe">
+            <div class="leaderboard-header black-bg lime-text">TOP_WHALES</div>
+            <div id="whaleList" class="whale-list"></div>
+        </aside>
+
         <header class="dashboard-header">
             <div class="logo-box lime-bg">V/F</div>
-            <div class="vibe-counter">
-                <span class="value" id="balanceDisplay">1,000,000,000 VIBE</span>
+            <div id="vibePowerCalc" class="power-calc">
+                <span class="label">POWER:</span>
+                <span id="powerLevel" class="value">1.00x</span>
+                <div class="power-bar-bg"><div id="powerBarFill" class="power-fill"></div></div>
             </div>
         </header>
+
+        <nav class="feed-nav">
+            <button class="feed-toggle active" id="pulseBtn">CURATED_PULSE</button>
+            <button class="feed-toggle" id="rawBtn">RAW_STREAM</button>
+        </nav>
 
         <main id="arenaTab" class="tab-content active">
             <div class="feed-container" id="projectFeed"></div>
         </main>
 
-        <main id="submitTab" class="tab-content">
+        <main id="submitTab" class="tab-content hidden">
             <div class="submit-card">
                 <h2>LIST_PROJECT</h2>
                 <div class="form-group">
-                    <button class="github-btn lime-bg">CONNECT_GITHUB</button>
+                    <button class="github-btn white-bg">CONNECT_GITHUB</button>
                     <input type="text" placeholder="REPO_URL">
-                    <textarea placeholder="PROJECT_DESCRIPTION"></textarea>
+                    <textarea placeholder="DESCRIPTION"></textarea>
                     <button class="list-btn black-bg white-text">LIST_IN_ARENA</button>
                 </div>
             </div>
         </main>
 
-        <div id="projectModal" class="modal-overlay hidden">
-            <div class="brutal-modal">
-                <button id="closeModal" class="close-btn">CLOSE_X</button>
-                <div id="modalContent"></div>
-            </div>
+        <div id="vibeCheckBar" class="upsell-bar hidden">
+            HOLD 50K $VIBE TO MOVE TO THE PRIORITY_PULSE FEED.
         </div>
 
         <footer class="tab-footer">
@@ -65,6 +72,20 @@
             <button class="tab-btn" data-tab="submitTab">SUBMIT_PROJECT</button>
         </footer>
     </section>
+
+    <div id="githubModal" class="modal-overlay hidden">
+        <div class="brutal-modal github-auth-box">
+            <div class="auth-header black-bg white-text">GITHUB_SECURE_AUTH</div>
+            <div class="auth-body">
+                <div class="github-icon-mock">GH</div>
+                <h3>AUTHORIZE VIBE/FUND?</h3>
+                <div class="auth-actions">
+                    <button id="confirmGH" class="auth-btn lime-bg">ALLOW_ACCESS</button>
+                    <button id="cancelGH" class="auth-btn white-bg">CANCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
