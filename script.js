@@ -1,123 +1,90 @@
 let projects = [
-    { id: 1, name: "LIQUID_VIBE", category: "DEFI", score: 45000, desc: "Automated liquidity provision for cultural assets." },
-    { id: 2, name: "ORACLE_X", category: "TOOLS", score: 12000, desc: "Real-time sentiment data for launchpad graduation." },
-    { id: 3, name: "NEON_SQUAD", category: "DAO", score: 5000, desc: "Governing the aesthetic layer of the blockchain." }
+    { id: 1, name: "ALPHA_LEAK", type: "DEFI", score: 42000, isPulse: true, desc: "Yield aggregator for vibe holders." },
+    { id: 2, name: "PIXEL_MINT", type: "NFT", score: 12000, isPulse: false, desc: "Generative art engine." },
+    { id: 3, name: "VIBE_CHECK", type: "TOOL", score: 8000, isPulse: true, desc: "Wallet sentiment analyzer." },
+    { id: 4, name: "GHOST_CHAT", type: "TOOL", score: 3000, isPulse: false, desc: "Encrypted p2p messaging." }
 ];
 
-let userPower = 1.0;
-const GOAL = 50000;
-
-function initializeScan() {
-    const addr = document.getElementById('walletInput').value;
-    const toast = document.getElementById('assetToast');
-    userPower = addr.length > 20 ? 10.0 : 1.0; // Simple whale detection logic
-    toast.innerText = `POWER_LOCKED: ${userPower}x`;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-    loadArena();
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById(tabId + 'Tab').classList.remove('hidden');
+    event.currentTarget.classList.add('active');
 }
 
-function launchConfetti() {
-    const emojis = ['🔥', '✨', '💰', '🚀', '🟢'];
-    for (let i = 0; i < 40; i++) {
-        const c = document.createElement('div');
-        c.className = 'snowflake';
-        c.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-        c.style.left = Math.random() * 100 + 'vw';
-        c.style.fontSize = Math.random() * 20 + 10 + 'px';
-        c.style.animationDuration = (Math.random() * 2 + 1) + 's';
-        document.body.appendChild(c);
-        setTimeout(() => c.remove(), 2000);
-    }
+function renderAll() {
+    const type = document.getElementById('typeFilter').value;
+    const arena = document.getElementById('arenaTab');
+    const pulse = document.getElementById('pulseGrid');
+    const stream = document.getElementById('streamGrid');
+
+    const filtered = type === 'ALL' ? projects : projects.filter(p => p.type === type);
+
+    // Render Arena
+    arena.innerHTML = filtered.map(p => `
+        <section class="art-card">
+            <div class="terminal">
+                <small style="color:var(--lime)">${p.type}</small>
+                <h2 style="font-size: 32px; margin: 10px 0;">${p.name}</h2>
+                <div class="progress-bar" style="width: ${(p.score/50000)*100}%"></div>
+                <p style="font-size: 12px; opacity: 0.7;">${p.desc}</p>
+                <div style="margin-top: 20px; font-weight: 900; font-size: 10px;">STRENGTH: ${p.score}</div>
+            </div>
+            <div class="vote-stack">
+                <button class="v-btn up" onclick="vote(${p.id}, 100)">↑</button>
+                <button class="v-btn down" onclick="vote(${p.id}, -50)">↓</button>
+            </div>
+        </section>
+    `).join('');
+
+    // Render Hall Pulse
+    pulse.innerHTML = filtered.filter(p => p.isPulse).map(p => `
+        <div class="tile">
+            <h4>${p.name}</h4>
+            <div style="opacity:0.5">${p.type}</div>
+            <div style="margin-top:10px">${p.score}</div>
+        </div>
+    `).join('');
+
+    // Render Hall Stream
+    stream.innerHTML = filtered.filter(p => !p.isPulse).map(p => `
+        <div class="tile">
+            <h4>${p.name}</h4>
+            <div style="opacity:0.5">${p.type}</div>
+            <div style="margin-top:10px">${p.score}</div>
+        </div>
+    `).join('');
 }
 
-function loadArena() {
-    const feed = document.getElementById('projectFeed');
-    feed.innerHTML = projects.map(p => {
-        const progress = Math.min((p.score / GOAL) * 100, 100);
-        const isGraduated = progress >= 100;
-        
-        return `
-            <section class="art-card ${isGraduated ? 'graduated' : ''}">
-                <div class="launch-header">
-                    <span class="status-pill ${isGraduated ? 'gold' : 'pulse'}">
-                        ${isGraduated ? 'GRADUATED' : 'LIVE_FUNDING'}
-                    </span>
-                    <span class="timer">SYNCING...</span>
-                </div>
-
-                <div class="terminal-view">
-                    <h2 class="project-title">${p.name}</h2>
-                    <div class="progress-container">
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar-fill" style="width: ${progress}%;"></div>
-                        </div>
-                        <div class="progress-stats">
-                            <span>${progress.toFixed(1)}% TO_TARGET</span>
-                            <span>${GOAL.toLocaleString()} VIBES</span>
-                        </div>
-                    </div>
-                    <p class="mission-text">${p.desc}</p>
-                </div>
-
-                <div class="launch-actions">
-                    <div class="stat-box">
-                        <small>VIBE_STRENGTH</small>
-                        <strong>${p.score.toLocaleString()}</strong>
-                    </div>
-                    <button class="launch-btn" onclick="vote(${p.id}, event)">BOOST_VIBE</button>
-                    <button class="mint-btn" onclick="openModal(${p.id})">TERMINAL_INFO</button>
-                </div>
-
-                <div class="ticker-wrap">
-                    <div class="ticker">
-                        NEW_BOOST_DETECTION (+${Math.round(10 * userPower)}) • NODE_SYNC_COMPLETE • ARENA_ID: ${p.id}99X
-                    </div>
-                </div>
-            </section>
-        `;
-    }).join('');
-}
-
-function vote(id, e) {
-    e.stopPropagation();
+function vote(id, amt) {
     const p = projects.find(x => x.id === id);
-    const oldScore = p.score;
-    p.score += Math.round(10 * userPower);
-    
-    if (oldScore < GOAL && p.score >= GOAL) {
-        launchConfetti();
-    }
-    
+    p.score += amt;
     const toast = document.getElementById('assetToast');
-    toast.innerText = `+${Math.round(10 * userPower)} IMPACT`;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 1000);
-    loadArena();
+    toast.innerText = amt > 0 ? "VIBE_BOOSTED" : "VIBE_REDUCED";
+    toast.style.opacity = 1;
+    setTimeout(() => toast.style.opacity = 0, 1000);
+    renderAll();
 }
 
-function openModal(id) {
-    const p = projects.find(x => x.id === id);
-    document.getElementById('modalTitle').innerText = p.name;
-    document.getElementById('modalBody').innerText = p.desc;
-    document.getElementById('projectModal').classList.remove('hidden');
-}
-
-function closeModal() {
-    document.getElementById('projectModal').classList.add('hidden');
+function submitProject() {
+    const newProj = {
+        id: Date.now(),
+        name: document.getElementById('pTitle').value,
+        type: "NEW",
+        score: 0,
+        isPulse: false,
+        desc: document.getElementById('pDesc').value
+    };
+    projects.push(newProj);
+    alert("LAUNCH_INITIALIZED");
+    switchTab('arena');
+    renderAll();
 }
 
 function toggleTheme() {
-    const html = document.documentElement;
-    const current = html.getAttribute('data-theme');
-    html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    const h = document.documentElement;
+    h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 }
 
-// Global Timer
-setInterval(() => {
-    document.querySelectorAll('.timer').forEach(t => {
-        t.innerText = `T-MINUS: ${new Date().toLocaleTimeString()}`;
-    });
-}, 1000);
-
-loadArena();
+// Init
+renderAll();
