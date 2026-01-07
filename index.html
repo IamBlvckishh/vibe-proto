@@ -3,32 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V/F | ENTER</title>
+    <title>V/F | SYSTEM</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="main-gate">
+
+    <section id="gateScreen" class="main-layout">
         <header class="gate-header">
             <h1 class="logo-text">VIBE/FUND</h1>
             <div class="status-box">SYSTEM_READY</div>
         </header>
 
-        <section class="gate-center">
+        <div class="gate-center">
             <div class="input-container">
-                <label for="walletInput">WALLET_ADDRESS</label>
+                <label>WALLET_ADDRESS</label>
                 <input type="text" id="walletInput" placeholder="PASTE SOLANA ADDRESS..." autocomplete="off">
             </div>
-            
             <button id="scanBtn" class="big-brutal-btn">
                 <span class="btn-text">INITIALIZE_SCAN</span>
                 <div class="scan-bar"></div>
             </button>
-        </section>
+        </div>
+        <footer class="clean-footer"></footer>
+    </section>
 
-        <footer class="gate-footer">
-            <p>DESIGNED_FOR_THE_1B_VIBE_SUPPLY</p>
+    <section id="homeScreen" class="main-layout hidden">
+        <header class="dashboard-header">
+            <div class="logo-box lime-bg">V/F</div>
+            <div class="vibe-counter">
+                <span class="label">WALLET_BALANCE:</span>
+                <span class="value" id="balanceDisplay">0 VIBE</span>
+            </div>
+        </header>
+
+        <main id="arenaTab" class="tab-content active">
+            <h2 class="section-title">PROJECT_ARENA</h2>
+            <div class="project-grid" id="projectGrid">
+                </div>
+        </main>
+
+        <main id="submitTab" class="tab-content">
+            <div class="submit-card">
+                <h2>LIST_PROJECT</h2>
+                <div class="form-group">
+                    <button class="github-btn lime-bg">CONNECT_GITHUB</button>
+                    <input type="text" placeholder="REPO_URL">
+                    <textarea placeholder="PROJECT_DESCRIPTION"></textarea>
+                    <button class="list-btn black-bg white-text">LIST_IN_ARENA</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="tab-footer">
+            <button class="tab-btn active" data-tab="arenaTab">THE_ARENA</button>
+            <button class="tab-btn" data-tab="submitTab">SUBMIT_PROJECT</button>
         </footer>
-    </div>
+    </section>
 
     <script src="script.js"></script>
 </body>
