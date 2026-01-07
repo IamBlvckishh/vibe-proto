@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V/F | SYSTEM</title>
+    <title>VIBE/FUND | SYSTEM_ACCESS</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,23 +23,22 @@
                 <span class="btn-text">INITIALIZE_SCAN</span>
                 <div class="scan-bar"></div>
             </button>
+            
+            <div id="logTerminal" class="log-terminal hidden"></div>
         </div>
-        <footer class="clean-footer"></footer>
+        <footer class="gate-footer-clean"></footer>
     </section>
 
     <section id="homeScreen" class="main-layout hidden">
         <header class="dashboard-header">
             <div class="logo-box lime-bg">V/F</div>
             <div class="vibe-counter">
-                <span class="label">WALLET_BALANCE:</span>
-                <span class="value" id="balanceDisplay">0 VIBE</span>
+                <span class="value" id="balanceDisplay">1,000,000,000 VIBE</span>
             </div>
         </header>
 
         <main id="arenaTab" class="tab-content active">
-            <h2 class="section-title">PROJECT_ARENA</h2>
-            <div class="project-grid" id="projectGrid">
-                </div>
+            <div class="feed-container" id="projectFeed"></div>
         </main>
 
         <main id="submitTab" class="tab-content">
@@ -53,6 +52,13 @@
                 </div>
             </div>
         </main>
+
+        <div id="projectModal" class="modal-overlay hidden">
+            <div class="brutal-modal">
+                <button id="closeModal" class="close-btn">CLOSE_X</button>
+                <div id="modalContent"></div>
+            </div>
+        </div>
 
         <footer class="tab-footer">
             <button class="tab-btn active" data-tab="arenaTab">THE_ARENA</button>
