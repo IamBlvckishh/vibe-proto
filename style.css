@@ -1,0 +1,83 @@
+:root {
+    --lime: #a3ff00;
+    --black: #000000;
+    --white: #ffffff;
+    --border: 4px solid #000000;
+    --shadow: 8px 8px 0px #000000;
+}
+
+body {
+    background: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0;
+    font-weight: 800;
+}
+
+.hidden { display: none !important; }
+.mono { font-family: monospace; font-size: 12px; }
+
+/* REUSABLE BRUTAL COMPONENTS */
+.brutal-card {
+    border: var(--border);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    background: var(--white);
+}
+
+.lime-bg { background: var(--lime); }
+.black-bg { background: var(--black); }
+.white-text { color: var(--white); }
+
+/* GATE DESIGN */
+#gate {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--lime);
+}
+
+/* FOOTER TAB SYSTEM */
+.brutal-footer {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+}
+
+.tab-btn {
+    border: var(--border);
+    box-shadow: 4px 4px 0px #000;
+    padding: 10px 20px;
+    background: var(--white);
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background: var(--lime);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+/* PROJECT CARDS */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.project-card {
+    border: var(--border);
+    padding: 1.5rem;
+    background: var(--white);
+    transition: 0.1s;
+}
+
+.project-card:hover {
+    box-shadow: var(--shadow);
+    transform: translate(-4px, -4px);
+}
