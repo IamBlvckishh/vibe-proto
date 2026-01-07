@@ -22,12 +22,10 @@
                 <span class="btn-text">INITIALIZE_SCAN</span>
                 <div class="scan-bar"></div>
             </button>
-            <div id="logTerminal" class="log-terminal hidden"></div>
         </div>
     </section>
 
     <section id="homeScreen" class="main-layout hidden">
-        
         <header class="dashboard-header">
             <div class="logo-box lime-bg" style="padding:10px; border:var(--border)">V/F</div>
             <div class="power-calc">
@@ -72,6 +70,8 @@
                     <select id="projCategory" class="brutal-select">
                         <option value="DEFI">CAT: DEFI</option>
                         <option value="TOOLS">CAT: TOOLS</option>
+                        <option value="NFT/ART">CAT: NFT/ART</option>
+                        <option value="INFRA">CAT: INFRA</option>
                         <option value="MEME">CAT: MEME</option>
                     </select>
                     <textarea id="projDesc" placeholder="DESCRIPTION"></textarea>
@@ -91,7 +91,7 @@
         <div class="brutal-modal">
             <div id="modalCategory" class="category-badge lime-bg">CATEGORY</div>
             <h2 id="modalTitle" style="margin-top:10px">PROJ_NAME</h2>
-            <p id="modalBody" style="margin: 20px 0; font-family: monospace;"></p>
+            <p id="modalBody" style="margin: 20px 0; font-family: monospace; line-height:1.4;"></p>
             <button id="closeDescBtn" class="tab-btn" style="margin-top:20px; width:100%; background:black; color:white;">CLOSE</button>
         </div>
     </div>
